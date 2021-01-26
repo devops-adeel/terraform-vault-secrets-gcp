@@ -13,13 +13,13 @@ terraform {
   }
 }
 
-variable approle_id {}
-variable approle_secret {}
+variable "approle_id" {}
+variable "approle_secret" {}
 
 provider "vault" {
   auth_login {
-    namespace = admin/terraform-vault-secrets-gcp
-    path = "auth/approle/login"
+    namespace = "admin/terraform-vault-secrets-gcp"
+    path      = "auth/approle/login"
 
     parameters = {
       role_id   = var.approle_id
