@@ -1,0 +1,24 @@
+import "sockaddr"
+import "mfa"
+import "strings"
+
+# We expect logins to come only from our private IP range
+cidrcheck = rule {
+    sockaddr.is_contained("10.20.0.0/16", request.connection.remote_addr)
+}
+
+# Require Ping MFA validation to succeed
+ping_valid = rule {
+    mfa.methods.ping.valid
+}
+
+main = rule when strings.has_prefix(request.path, "auth/ldap/login") {
+    ping_valid and cidrcheck
+}
+
+main = rule {
+    identity.entity.name is "jeff" or
+    identity.entity.id is "fe2a5bfd-c483-9263-b0d4-f9d345efdf9f" or
+    "sysops" in identity.groups.names or
+    "14c0940a-5c07-4b97-81ec-0d423accb8e0" in keys(identity.groups.by_id)
+}
