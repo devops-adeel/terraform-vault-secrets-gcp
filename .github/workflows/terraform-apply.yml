@@ -1,0 +1,66 @@
+name: terraform-plan-approve-apply
+on: [push]
+jobs:
+  terraform-init-plan:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: integration_tests/fixtures
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Upload terraform files
+        uses: actions/upload-artifact@v2
+        with:
+          name: tf-files
+          path: |
+            *.tf
+            !integration_tests
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          cli_config_credentials_token: ${{ secrets.TFE_TOKEN }}
+
+      - name: Download TF module files
+        uses: actions/download-artifact@v2
+        with:
+          name: tf-files
+          path: integration_tests/fixtures/module
+
+      - name: Display structure of downloaded files
+        run: ls -l
+        working-directory: integration_tests/fixtures/module
+
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+        working-directory: integration_tests/fixtures
+        continue-on-error: true
+
+      - name: Terraform get update
+        id: get
+        run: terraform get -update
+        working-directory: integration_tests/fixtures
+
+      - name: Terraform Init
+        id: init
+        run: terraform init -input=false
+        working-directory: integration_tests/fixtures
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan
+        working-directory: integration_tests/fixtures
+
+      - name: Terraform Apply
+        id: apply
+        run: terraform apply -auto-approve -input=false
+        working-directory: integration_tests/fixtures
+        continue-on-error: true
+
+      - name: Terraform Destroy
+        id: destroy
+        run: terraform destroy -auto-approve -input=false
+        working-directory: integration_tests/fixtures
