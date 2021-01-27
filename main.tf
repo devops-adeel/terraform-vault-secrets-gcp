@@ -3,7 +3,6 @@ locals {
   secret_type       = "gcp"
 }
 
-#TODO: POST /gcp/config/rotate-root immediately after new creds are put in.
 resource "vault_gcp_secret_backend" "default" {
   credentials = var.credentials
   description = "GCP Secrets Backend"
