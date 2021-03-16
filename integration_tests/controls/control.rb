@@ -13,8 +13,8 @@ title "Vault Integration Test"
 
 control "vlt-1.0" do
   impact 0.7
-  title "Test access to kv secret"
-  desc "Test access to kv secret"
+  title "Test access to GCP secret"
+  desc "Test access to GCP secret"
   describe http("#{url}/v1/#{namespace}/#{path}",
               method: 'GET',
               headers: {'X-Vault-Token' => "#{token}"}) do
