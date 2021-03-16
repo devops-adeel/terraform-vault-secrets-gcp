@@ -44,31 +44,17 @@ resource "vault_approle_auth_backend_login" "default" {
   secret_id = module.vault_approle.approle_secret
 }
 
-provider "vault" {
-  alias     = "default"
-  token     = vault_approle_auth_backend_login.default.client_token
-  namespace = "admin/terraform-vault-secrets-gcp"
-}
-
-data "vault_generic_secret" "default" {
-  provider = vault.default
-  path     = format("gcp/token/%s-%s", local.env, local.service)
-}
-
-provider "google" {
-  access_token = data.vault_generic_secret.default.data["token"]
-}
-
-resource "google_storage_bucket" "default" {
-  name          = "vault-gcp-integration-test"
-  location      = "EU"
-  force_destroy = true
-  lifecycle_rule {
-    condition {
-      age = 3
-    }
-    action {
-      type = "Delete"
-    }
+data "template_file" "default" {
+  template = file("attributes.tpl")
+  vars = {
+    token     = vault_approle_auth_backend_login.default.client_token
+    url       = var.vault_address
+    namespace = "admin/terraform-vault-secrets-gcp/"
+    path      = format("gcp/token/%s-%s", local.env, local.service)
   }
+}
+
+resource "local_file" "default" {
+  content  = data.template_file.default.rendered
+  filename = "${path.module}/../attributes/attributes.yml"
 }

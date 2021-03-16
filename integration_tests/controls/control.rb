@@ -1,19 +1,33 @@
-# copyright: 2018, The Authors
+#!/usr/bin/env ruby
+#
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+#
 
-title "sample section"
+token     = attribute('token'     , description : 'token for vault'     )
+url       = attribute('url'       , description : 'url for vault'       )
+namespace = attribute('namespace' , description : 'namespace for vault' )
+path      = attribute('path'      , description : 'path for vault'      )
 
-# you can also use plain tests
-describe file("/tmp") do
-  it { should be_directory }
-end
+title "Vault Integration Test"
 
-# you add controls here
-control "tmp-1.0" do                        # A unique ID for this control
-  impact 0.7                                # The criticality, if this control fails.
-  title "Create /tmp directory"             # A human-readable title
-  desc "An optional description..."
-  describe file("/tmp") do                  # The actual test
-    it { should be_directory }
+control "vlt-1.0" do
+  impact 0.7
+  title "Test access to kv secret"
+  desc "Test access to kv secret"
+  describe http("#{url}/v1/#{namespace}/#{path}",
+              method: 'GET',
+              headers: {'X-Vault-Token' => "#{token}"}) do
+    its('status') { should eq 200 }
   end
 end
 
+control "vlt-2.0" do
+  impact 0.7
+  title "Test health"
+  desc "Test health"
+  describe http("#{url}/v1/sys/health?perfstandbyok=true",
+              method: 'GET') do
+    its('status') { should eq 200 }
+  end
+end
