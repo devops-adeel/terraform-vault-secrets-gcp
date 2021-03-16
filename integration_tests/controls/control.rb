@@ -4,10 +4,10 @@
 # vi: set ft=ruby :
 #
 
-token     = attribute('token'     , description : 'token for vault'     )
-url       = attribute('url'       , description : 'url for vault'       )
-namespace = attribute('namespace' , description : 'namespace for vault' )
-path      = attribute('path'      , description : 'path for vault'      )
+token     = attribute('token', description: 'token for vault')
+url       = attribute('url', description: 'url for vault')
+namespace = attribute('namespace', description: 'namespace for vault')
+path      = attribute('path', description: 'path for vault')
 
 title "Vault Integration Test"
 
