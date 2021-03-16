@@ -22,6 +22,7 @@ jobs:
         uses: hashicorp/setup-terraform@v1
         with:
           cli_config_credentials_token: ${{ secrets.TFE_TOKEN }}
+          terraform_wrapper: false
 
       - name: Download TF module files
         uses: actions/download-artifact@v2
@@ -35,7 +36,7 @@ jobs:
 
       - name: Terraform fmt
         id: fmt
-        run: terraform fmt -check
+        run: terraform fmt
         working-directory: integration_tests/fixtures
         continue-on-error: true
 
@@ -58,6 +59,17 @@ jobs:
         id: apply
         run: terraform apply -auto-approve -input=false
         working-directory: integration_tests/fixtures
+        continue-on-error: true
+
+      - name: Terraform Output
+        id: output
+        run: terraform output -json > ../files/terraform.json
+        working-directory: integration_tests/fixtures
+
+      - name: run inspec
+        uses: docker://chef/inspec:latest
+        with:
+          args: exec integration_tests --chef-license=accept
         continue-on-error: true
 
       - name: Terraform Destroy
