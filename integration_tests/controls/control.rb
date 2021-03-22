@@ -1,19 +1,36 @@
-# copyright: 2018, The Authors
+#!/usr/bin/env ruby
+#
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+#
 
-title "sample section"
+content = inspec.profile.file('terraform.json')
+params = JSON.parse(content)
 
-# you can also use plain tests
-describe file("/tmp") do
-  it { should be_directory }
-end
+token     = params['token']['value']
+url       = params['url']['value']
+namespace = params['namespace']['value']
+path      = params['path']['value']
 
-# you add controls here
-control "tmp-1.0" do                        # A unique ID for this control
-  impact 0.7                                # The criticality, if this control fails.
-  title "Create /tmp directory"             # A human-readable title
-  desc "An optional description..."
-  describe file("/tmp") do                  # The actual test
-    it { should be_directory }
+title "Vault Integration Test"
+
+control "vlt-1.0" do
+  impact 0.7
+  title "Test access to GCP secret"
+  desc "Test access to GCP secret"
+  describe http("#{url}/v1/#{namespace}#{path}",
+              method: 'GET',
+              headers: {'X-Vault-Token' => "#{token}"}) do
+    its('status') { should eq 200 }
   end
 end
 
+control "vlt-2.0" do
+  impact 0.7
+  title "Test health"
+  desc "Test health"
+  describe http("#{url}/v1/sys/health?perfstandbyok=true",
+              method: 'GET') do
+    its('status') { should eq 200 }
+  end
+end
