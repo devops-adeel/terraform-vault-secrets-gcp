@@ -17,6 +17,7 @@ strongly advised to rotate the key immediately after it setup successfully.
     http://127.0.0.1:8200/v1/gcp/config/rotate-root
 ```
 
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Providers
 
 | Name    | Version   |
@@ -51,3 +52,4 @@ No Modules.
 | Name           | Description                    |
 | ------         | -------------                  |
 | `backend_path` | Secrets Backend Path as output |
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
