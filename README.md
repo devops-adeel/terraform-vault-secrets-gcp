@@ -1,3 +1,5 @@
+![inspec-test](https://github.com/devops-adeel/terraform-vault-secrets-gcp/actions/workflows/terraform-apply.yml/badge.svg)
+
 # Terraform Vault GCP Secrets
 
 This terraform module mounts GCP Secrets backend with an ACL templated policy.
