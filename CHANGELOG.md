@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0](https://www.github.com/devops-adeel/terraform-vault-secrets-gcp/compare/v0.3.0...v0.4.0) (2021-03-24)
+
+
+### Features
+
+* added auto-generated docs/release ([65dce7a](https://www.github.com/devops-adeel/terraform-vault-secrets-gcp/commit/65dce7a1ca5aa9e3fe82252486a01fd21ed27c34))
+
+
+### Bug Fixes
+
+* added pipeline status ([6dcc3e5](https://www.github.com/devops-adeel/terraform-vault-secrets-gcp/commit/6dcc3e5a24b29bfece7a3ba4ecfd15f984d740c7))
+* amended README ([b33812d](https://www.github.com/devops-adeel/terraform-vault-secrets-gcp/commit/b33812dee9fc680dc6a60352efdd6b855a11a4cd))
+* renamed pre-commit yaml file ([fa2d31a](https://www.github.com/devops-adeel/terraform-vault-secrets-gcp/commit/fa2d31a5d81c03d7e03e7714de8b4c3c0e73413d))
+
 ## [0.3.0](https://www.github.com/devops-adeel/terraform-vault-secrets-gcp/compare/v0.2.0...v0.3.0) (2021-03-23)
 
 
