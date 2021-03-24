@@ -1,3 +1,16 @@
+/**
+ * Usage:
+ *
+ * ```hcl
+ *
+ * module "vault_gcp_secrets" {
+ *   source      = "git::https://github.com/devops-adeel/terraform-vault-secrets-gcp.git?ref=v0.1.0"
+ *   entity_ids = [module.vault_approle.entity_id]
+ * }
+ * ```
+ */
+
+
 locals {
   member_entity_ids = var.entity_ids != [] ? var.entity_ids : [vault_identity_entity.default.id]
   secret_type       = "gcp"
