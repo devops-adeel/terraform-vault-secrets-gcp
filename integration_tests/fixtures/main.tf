@@ -6,7 +6,6 @@ locals {
 
 module "default" {
   source      = "./module"
-  entity_ids  = [module.vault_approle.entity_id]
   credentials = var.credentials
 }
 
@@ -15,11 +14,12 @@ data "vault_auth_backend" "default" {
 }
 
 module "vault_approle" {
-  source           = "git::https://github.com/devops-adeel/terraform-vault-approle.git?ref=v0.6.1"
-  application_name = local.application_name
-  env              = local.env
-  service          = local.service
-  mount_accessor   = data.vault_auth_backend.default.accessor
+  source            = "git::https://github.com/devops-adeel/terraform-vault-approle.git?ref=v0.7.0"
+  application_name  = local.application_name
+  env               = local.env
+  service           = local.service
+  mount_accessor    = data.vault_auth_backend.default.accessor
+  identity_group_id = module.default.identity_group_id
 }
 
 resource "vault_gcp_secret_roleset" "roleset" {
