@@ -1,15 +1,19 @@
 output "token" {
-  value = vault_approle_auth_backend_login.default.client_token
+  description = "Vault Client Token"
+  value       = vault_approle_auth_backend_login.default.client_token
 }
 
 output "url" {
-  value = var.vault_address
+  description = "Vault URL Address"
+  value       = var.vault_address
 }
 
 output "namespace" {
-  value = "admin/terraform-vault-secrets-gcp/"
+  description = "Vault Namespace"
+  value       = "admin/terraform-vault-secrets-gcp/"
 }
 
 output "path" {
-  value = format("gcp/token/%s-%s", local.env, local.service)
+  description = "Vault API Endpoint"
+  value       = format("gcp/token/%s-%s", local.env, local.service)
 }
