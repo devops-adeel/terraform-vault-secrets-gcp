@@ -19,7 +19,7 @@ variable "approle_secret" {}
 provider "vault" {
   auth_login {
     namespace = "admin/terraform-vault-secrets-gcp"
-    path      = "auth/approle/login"
+    path = "auth/approle/login"
 
     parameters = {
       role_id   = var.approle_id
