@@ -52,3 +52,49 @@ resource "vault_identity_group_policies" "default" {
     vault_policy.default.name,
   ]
 }
+
+
+#####
+#
+# Rotate Root Credentials
+#
+#####
+
+data "vault_policy_document" "rotation" {
+  rule {
+    path         = "${local.secret_type}/roleset/{{identity.entity.metadata.env}}-{{identity.entity.metadata.service}}/rotate"
+    capabilities = ["update"]
+    description  = "Rotate SA in order to invalidate oAuth2 token generated"
+  }
+  rule {
+    path         = "${local.secret_type}/config/rotate-root"
+    capabilities = ["update"]
+    description  = "Rotate Root Credential"
+  }
+  rule {
+    path         = "auth/token/*"
+    capabilities = ["create", "read", "update", "delete", "list"]
+    description  = "create child tokens"
+  }
+}
+
+resource "vault_policy" "rotation" {
+  name   = "${local.secret_type}-rotation"
+  policy = data.vault_policy_document.rotation.hcl
+}
+
+resource "vault_identity_group" "rotation" {
+  name                       = "${local.secret_type}-rotation"
+  type                       = "internal"
+  external_policies          = true
+  external_member_entity_ids = true
+}
+
+resource "vault_identity_group_policies" "rotation" {
+  group_id  = vault_identity_group.rotation.id
+  exclusive = true
+  policies = [
+    "default",
+    vault_policy.rotation.name,
+  ]
+}

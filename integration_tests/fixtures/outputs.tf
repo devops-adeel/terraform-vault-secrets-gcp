@@ -17,3 +17,13 @@ output "path" {
   description = "Vault API Endpoint"
   value       = format("gcp/token/%s-%s", local.env, local.service)
 }
+
+output "rotation_token" {
+  description = "Vault Client Token for root credential rotation"
+  value       = vault_approle_auth_backend_login.rotation.client_token
+}
+
+output "rotation_path" {
+  description = "Vault API Endpoint root credential rotation"
+  value       = "gcp/config/rotate-root"
+}
