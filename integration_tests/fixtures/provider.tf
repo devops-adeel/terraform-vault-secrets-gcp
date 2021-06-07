@@ -28,3 +28,4 @@ provider "vault" {
   }
 }
 
+provider "google" {}

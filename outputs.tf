@@ -8,3 +8,9 @@ output "identity_group_id" {
   value       = vault_identity_group.default.id
   sensitive   = true
 }
+
+output "rotation_group_id" {
+  description = "ID for rotation identity group"
+  value       = vault_identity_group.rotation.id
+  sensitive   = true
+}
