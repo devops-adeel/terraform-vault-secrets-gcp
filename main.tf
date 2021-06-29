@@ -4,7 +4,7 @@
  * ```hcl
  *
  * module "vault_gcp_secrets" {
- *   source      = "git::https://github.com/devops-adeel/terraform-vault-secrets-gcp.git?ref=v0.7.0"
+ *   source      = "git::https://github.com/devops-adeel/terraform-vault-secrets-gcp.git?ref=v0.7.1"
  *   credentials = var.credentials
  * }
  * ```
@@ -42,11 +42,11 @@ resource "vault_identity_group" "editor" {
 }
 
 resource "vault_identity_group_policies" "editor" {
-  group_id  = vault_identity_group.default.id
+  group_id  = vault_identity_group.editor.id
   exclusive = true
   policies = [
     "default",
-    vault_policy.default.name,
+    vault_policy.editor.name,
   ]
 }
 
