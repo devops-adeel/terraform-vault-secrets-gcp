@@ -25,15 +25,22 @@ Usage:
 ```hcl
 
 module "vault_gcp_secrets" {
-  source      = "git::https://github.com/devops-adeel/terraform-vault-secrets-gcp.git?ref=v0.5.0"
+  source      = "git::https://github.com/devops-adeel/terraform-vault-secrets-gcp.git?ref=v0.7.0"
+  credentials = var.credentials
 }
 ```
+
+## Requirements
+
+| Name | Version |
+|------|---------|
+| <a name="requirement_vault"></a> [vault](#requirement\_vault) | ~> 2.21.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_vault"></a> [vault](#provider\_vault) | n/a |
+| <a name="provider_vault"></a> [vault](#provider\_vault) | ~> 2.21.0 |
 
 ## Modules
 
@@ -44,10 +51,16 @@ No modules.
 | Name | Type |
 |------|------|
 | [vault_gcp_secret_backend.default](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/gcp_secret_backend) | resource |
-| [vault_identity_group.default](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/identity_group) | resource |
-| [vault_identity_group_policies.default](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/identity_group_policies) | resource |
-| [vault_policy.default](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/policy) | resource |
-| [vault_policy_document.default](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/data-sources/policy_document) | data source |
+| [vault_identity_group.editor](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/identity_group) | resource |
+| [vault_identity_group.rotation](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/identity_group) | resource |
+| [vault_identity_group_policies.editor](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/identity_group_policies) | resource |
+| [vault_identity_group_policies.rotation](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/identity_group_policies) | resource |
+| [vault_policy.editor](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/policy) | resource |
+| [vault_policy.reader](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/policy) | resource |
+| [vault_policy.rotation](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/policy) | resource |
+| [vault_policy_document.editor](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/data-sources/policy_document) | data source |
+| [vault_policy_document.reader](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/data-sources/policy_document) | data source |
+| [vault_policy_document.rotation](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/data-sources/policy_document) | data source |
 
 ## Inputs
 
@@ -61,4 +74,6 @@ No modules.
 |------|-------------|
 | <a name="output_backend_path"></a> [backend\_path](#output\_backend\_path) | Secrets Backend Path as output |
 | <a name="output_identity_group_id"></a> [identity\_group\_id](#output\_identity\_group\_id) | ID of the created Vault Identity Group. |
+| <a name="output_reader_policy_name"></a> [reader\_policy\_name](#output\_reader\_policy\_name) | The name of the GCP Reader Policy |
+| <a name="output_rotation_group_id"></a> [rotation\_group\_id](#output\_rotation\_group\_id) | ID for rotation identity group |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

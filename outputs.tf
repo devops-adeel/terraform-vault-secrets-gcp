@@ -14,3 +14,8 @@ output "rotation_group_id" {
   value       = vault_identity_group.rotation.id
   sensitive   = true
 }
+
+output "reader_policy_name" {
+  description = "The name of the GCP Reader Policy"
+  value       = vault_policy.reader.name
+}
