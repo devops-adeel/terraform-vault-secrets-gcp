@@ -25,7 +25,7 @@ Usage:
 ```hcl
 
 module "vault_gcp_secrets" {
-  source      = "git::https://github.com/devops-adeel/terraform-vault-secrets-gcp.git?ref=v0.7.0"
+  source      = "git::https://github.com/devops-adeel/terraform-vault-secrets-gcp.git?ref=v0.7.1"
   credentials = var.credentials
 }
 ```
