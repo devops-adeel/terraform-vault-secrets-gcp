@@ -4,7 +4,7 @@
  * ```hcl
  *
  * module "vault_gcp_secrets" {
- *   source      = "git::https://github.com/devops-adeel/terraform-vault-secrets-gcp.git?ref=v0.7.1"
+ *   source      = "git::https://github.com/devops-adeel/terraform-vault-secrets-gcp.git?ref=v0.7.2"
  *   credentials = var.credentials
  * }
  * ```
