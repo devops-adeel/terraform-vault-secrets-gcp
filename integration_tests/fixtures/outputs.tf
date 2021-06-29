@@ -15,7 +15,7 @@ output "namespace" {
 
 output "path" {
   description = "Vault API Endpoint"
-  value       = format("gcp/token/%s-%s", local.env, local.service)
+  value       = format("gcp/token/editor-%s-%s", local.env, local.service)
 }
 
 output "rotation_token" {
