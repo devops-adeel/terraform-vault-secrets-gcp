@@ -18,7 +18,7 @@ resource "vault_gcp_secret_backend" "default" {
 
 data "vault_policy_document" "editor" {
   rule {
-    path         = "gcp/token/{{identity.entity.metadata.env}}-{{identity.entity.metadata.service}}-editor"
+    path         = "gcp/token/editor-{{identity.entity.metadata.env}}-{{identity.entity.metadata.service}}"
     capabilities = ["read"]
     description  = "Allow generation of Oauth tokens, the end path name is the roleset name"
   }

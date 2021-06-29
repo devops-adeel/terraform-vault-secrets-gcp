@@ -43,7 +43,7 @@ module "vault_approle" {
 
 resource "vault_gcp_secret_roleset" "non_prod" {
   backend      = module.default.backend_path
-  roleset      = format("%s-%s", local.env, local.service)
+  roleset      = format("editor-%s-%s", local.env, local.service)
   secret_type  = "access_token"
   project      = google_project_iam_member.default.project
   token_scopes = ["https://www.googleapis.com/auth/cloud-platform"]
@@ -59,7 +59,7 @@ resource "vault_gcp_secret_roleset" "non_prod" {
 
 resource "vault_gcp_secret_roleset" "prod" {
   backend      = module.default.backend_path
-  roleset      = "prod-db"
+  roleset      = "editor-prod-db"
   secret_type  = "access_token"
   project      = google_project_iam_member.default.project
   token_scopes = ["https://www.googleapis.com/auth/cloud-platform"]
