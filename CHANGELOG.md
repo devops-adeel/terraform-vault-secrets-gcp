@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+### [0.7.3](https://www.github.com/devops-adeel/terraform-vault-secrets-gcp/compare/v0.7.2...v0.7.3) (2021-06-29)
+
+
+### Bug Fixes
+
+* added editor to roleset ([0a1594b](https://www.github.com/devops-adeel/terraform-vault-secrets-gcp/commit/0a1594ba4c07081fd1097422a9132286abceaa0a))
+* update versioning in doc ([5e9c207](https://www.github.com/devops-adeel/terraform-vault-secrets-gcp/commit/5e9c2079189f4b8988685ee66856675445adbeb2))
+
 ### [0.7.2](https://www.github.com/devops-adeel/terraform-vault-secrets-gcp/compare/v0.7.1...v0.7.2) (2021-06-29)
 
 
