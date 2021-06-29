@@ -4,24 +4,21 @@
  * ```hcl
  *
  * module "vault_gcp_secrets" {
- *   source      = "git::https://github.com/devops-adeel/terraform-vault-secrets-gcp.git?ref=v0.5.0"
+ *   source      = "git::https://github.com/devops-adeel/terraform-vault-secrets-gcp.git?ref=v0.7.0"
+ *   credentials = var.credentials
  * }
  * ```
  */
 
-
-locals {
-  secret_type = "gcp"
-}
 
 resource "vault_gcp_secret_backend" "default" {
   credentials = var.credentials
   description = "GCP Secrets Backend"
 }
 
-data "vault_policy_document" "default" {
+data "vault_policy_document" "editor" {
   rule {
-    path         = "${local.secret_type}/+/{{identity.entity.metadata.env}}-{{identity.entity.metadata.service}}"
+    path         = "gcp/token/{{identity.entity.metadata.env}}-{{identity.entity.metadata.service}}-editor"
     capabilities = ["read"]
     description  = "Allow generation of Oauth tokens, the end path name is the roleset name"
   }
@@ -32,19 +29,19 @@ data "vault_policy_document" "default" {
   }
 }
 
-resource "vault_policy" "default" {
-  name   = "${local.secret_type}-creds-tmpl"
-  policy = data.vault_policy_document.default.hcl
+resource "vault_policy" "editor" {
+  name   = "gcp-editor-creds-tmpl"
+  policy = data.vault_policy_document.editor.hcl
 }
 
-resource "vault_identity_group" "default" {
-  name                       = "${local.secret_type}-creds"
+resource "vault_identity_group" "editor" {
+  name                       = "gcp-editor-creds"
   type                       = "internal"
   external_policies          = true
   external_member_entity_ids = true
 }
 
-resource "vault_identity_group_policies" "default" {
+resource "vault_identity_group_policies" "editor" {
   group_id  = vault_identity_group.default.id
   exclusive = true
   policies = [
@@ -62,12 +59,12 @@ resource "vault_identity_group_policies" "default" {
 
 data "vault_policy_document" "rotation" {
   rule {
-    path         = "${local.secret_type}/roleset/{{identity.entity.metadata.env}}-{{identity.entity.metadata.service}}/rotate"
+    path         = "gcp/roleset/{{identity.entity.metadata.env}}-{{identity.entity.metadata.service}}/rotate"
     capabilities = ["update"]
     description  = "Rotate SA in order to invalidate oAuth2 token generated"
   }
   rule {
-    path         = "${local.secret_type}/config/rotate-root"
+    path         = "gcp/config/rotate-root"
     capabilities = ["update"]
     description  = "Rotate Root Credential"
   }
@@ -79,12 +76,12 @@ data "vault_policy_document" "rotation" {
 }
 
 resource "vault_policy" "rotation" {
-  name   = "${local.secret_type}-rotation"
+  name   = "gcp-rotation"
   policy = data.vault_policy_document.rotation.hcl
 }
 
 resource "vault_identity_group" "rotation" {
-  name                       = "${local.secret_type}-rotation"
+  name                       = "gcp-rotation"
   type                       = "internal"
   external_policies          = true
   external_member_entity_ids = true
@@ -97,4 +94,23 @@ resource "vault_identity_group_policies" "rotation" {
     "default",
     vault_policy.rotation.name,
   ]
+}
+
+#####
+#
+# Inspec Reader Credentials
+#
+#####
+
+data "vault_policy_document" "reader" {
+  rule {
+    path         = "gcp/key/*"
+    capabilities = ["read"]
+    description  = "Allow generation of service-account-keys, the end path name is the roleset name"
+  }
+}
+
+resource "vault_policy" "reader" {
+  name   = "gcp-reader-creds"
+  policy = data.vault_policy_document.reader.hcl
 }
